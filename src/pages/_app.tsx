@@ -1,6 +1,12 @@
-import '@/styles/globals.css'
-import type { AppProps } from 'next/app'
-
+import type { AppProps } from "next/app";
+import "../styles/primeflex.min.css";
+import "../styles/primeicons.css";
+import "../styles/primereact-main.css";
+import { PageLayout } from "src/components/layout/page-layout";
 export default function App({ Component, pageProps }: AppProps) {
-  return <Component {...pageProps} />
+  return (
+    <PageLayout>
+      <Component {...pageProps} />
+    </PageLayout>
+  );
 }
