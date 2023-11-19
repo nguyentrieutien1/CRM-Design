@@ -24,7 +24,8 @@ type BoxButtonColor =
   | "delete"
   | "white"
   | "blue"
-  | "yellow";
+  | "yellow"
+  | 'bg-gray'
 
 type BoxButtonProps = React.PropsWithChildren<
   HTMLMotionProps<"button"> & {
@@ -293,6 +294,18 @@ const Button = styled(motion.button).attrs(
     )};
 
   ${({ $boxColor, $isOnlyShowBorder }) =>
+  ($boxColor === "bg-gray" &&
+      `
+			& ${Label} {
+				color: #000000;
+			}
+
+			& ${Shade} {
+				background: #F6F6FA;
+        border: none
+				
+			}
+		`) ||
     ($boxColor === "yellow" &&
       `
 			& ${Label} {

@@ -8,7 +8,14 @@ import DocumentTextIcon from "public/icons/document-text-icon.svg";
 import styled from "styled-components";
 import Image from "next/image";
 
-export default function DashboardCreateActivity() {
+interface DashboardCreateActivityProps {
+  OnOpenDialogCreateActivity: () => void;
+  setMode: () => void;
+}
+export default function DashboardCreateActivity(
+  props: DashboardCreateActivityProps
+) {
+  const { OnOpenDialogCreateActivity, setMode } = props;
   const [tabIndex, setTabIndex] = useState<number>(0);
 
   const tabs = ["Activities", "Quote Request", "Notes", "BP files"];
@@ -21,13 +28,14 @@ export default function DashboardCreateActivity() {
             style={{ width: "100%" }}
             boxColor="yellow"
             isOnlyShowBorder={true}
+            onClick={() => OnOpenDialogCreateActivity()}
           >
             <div className="flex align-items-center">
               <div className="mr-2">
                 <TableText>+</TableText>
               </div>
               <div className="">
-                <TableText>Create New Activity</TableText>
+                <TableText isBold>Create New Activity</TableText>
               </div>
             </div>
           </BoxButton>
@@ -73,23 +81,29 @@ export default function DashboardCreateActivity() {
               style={{ width: "100%" }}
               boxColor="yellow"
               isOnlyShowBorder={true}
+              onClick={() => OnOpenDialogCreateActivity()}
             >
               <div className="flex align-items-center">
                 <div className="mr-2">
                   <TableText>+</TableText>
                 </div>
                 <div className="">
-                  <TableText>Create New Activity</TableText>
+                  <TableText isBold>Create New Activity</TableText>
                 </div>
               </div>
             </BoxButton>
             <div className="mt-3">
               {[1, 2, 3].map((item, i) => (
-                <div
+                <ActiveItem
                   key={i}
-                  className="mb-3 bg-white  border-1  border-gray-300 p-2  border-round-lg"
+                  className="mb-3 bg-white  border-1  border-gray-300   border-round-lg"
+                  $isExpiryDate={i === 0 ? true : false}
+                  onClick={() => setMode()}
                 >
-                  <div className="flex align-items-center justify-content-between">
+                  <ActiveItemHeder
+                    className="flex align-items-center justify-content-between p-3 border-round-top-lg "
+                    $isExpiryDate={i === 0 ? true : false}
+                  >
                     <div>
                       <TableText fontSize={"16px"} isBold>
                         CALL
@@ -103,10 +117,12 @@ export default function DashboardCreateActivity() {
                         </div>
                       </div>
                     </div>
-                    <Image src={SecurityUserIcon} alt={SecurityUserIcon} />
-                  </div>
+                    {i % 2 === 0 && (
+                      <Image src={SecurityUserIcon} alt={SecurityUserIcon} />
+                    )}
+                  </ActiveItemHeder>
 
-                  <div className="flex mt-3">
+                  <div className="flex px-3 py-4 line-height-3">
                     <Image src={DocumentTextIcon} alt={DocumentTextIcon} />
                     <div className="ml-2 w-9">
                       <TableText fontSize={"12px"}>
@@ -116,7 +132,7 @@ export default function DashboardCreateActivity() {
                       </TableText>
                     </div>
                   </div>
-                </div>
+                </ActiveItem>
               ))}
             </div>
           </div>
@@ -125,6 +141,16 @@ export default function DashboardCreateActivity() {
     </Container>
   );
 }
+const ActiveItemHeder = styled.div<ActiveItemProps>`
+  background-color: ${({ $isExpiryDate }) =>
+    $isExpiryDate ? "#FEECEC" : "#F6F6FA"};
+`;
+interface ActiveItemProps {
+  $isExpiryDate: boolean;
+}
+const ActiveItem = styled.div<ActiveItemProps>`
+  border-color: ${({ $isExpiryDate }) => $isExpiryDate && "#F34343"} !important;
+`;
 const Container = styled.div``;
 const Tab = styled.div`
   display: flex;
